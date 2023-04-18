@@ -1,1 +1,1 @@
-This program uses an array of objects as well as a linked list. THe purpose of this program is to read in a file and simulate a restuarants that has a queue. A queue is used to enqueue an dequeue customers.
+This program uses an array of objects as well as a linked list. THe purpose of this program is to read in a file and simulate a restuarants that has a queue. A queue is used to enqueue an dequeue customers. Use the main to run the program!
