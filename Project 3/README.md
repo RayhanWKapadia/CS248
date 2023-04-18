@@ -1,1 +1,1 @@
-This project uses an interface and calcuates the exact day of the week of January 1st in the year 3000 from the present day. This is essentially a clock that the user can edit to determine the day of the week of any year in the future.
+This project uses an interface and calcuates the exact day of the week of January 1st in the year 3000 from the present day. This is essentially a clock that the user can edit to determine the day of the week of any year in the future. Use the main to run the program!
