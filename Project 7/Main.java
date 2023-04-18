@@ -1,177 +1,167 @@
-class BST implements tree // Binary Search Tree!!
+//Rayhan Kapadia April 11, 2023
+import java.io.*;
+import java.util.*;
+
+class Main
 {
-  private class treenode
+  public static void main(String [] args)
+  throws IOException
   {
-    public Comparable data;
-    public treenode left;
-    public treenode right;
-  }
-  treenode root;
-  int count;
+    char a= 'A';
+    String dog = "cat";
+    tree giving=new BST();
+    Scanner fishfile2 = new Scanner(new FileReader("camp.txt"));
+    System.out.println("Welcome to Camp Posanivee!!");
+    while(fishfile2.hasNextLine()) {
+      a = fishfile2.next().charAt(0);
+      if(a=='E')
+      {   
+        System.out.print("Command: E ");
+        Fish key=new Fish(fishfile2);
+        giving.insert(key);
+        System.out.println(key.getCon());
+        System.out.println("New camper added.");
+      }
+        
+        
+      
+  
+     else if(a=='A')
+      {
+        System.out.println("Command: A");
+        if(giving.isEmpty())
+            {
+              System.out.println("There are no campers.");
+            }
+        double totals=0;
+        double average=0;
+        giving.reset(BST.PREORDER);
+        if(!giving.isEmpty())
+      {
+        while(giving.hasNext()) 
+      { 
+        if((((Fish)giving.getNext()).getAge())!=0)
+        {
+          average += ((Fish)giving.getNext()).getAge(); 
+           totals ++;
+          
+        }
+      }
+        System.out.println("The average age is: "+average/totals);
+      }
+      }
 
-  public BST()
-  {
-    root=null; count=0;
-    Q=null;
-  }
+      
+      else if(a=='P')
+      {
+      System.out.println("Command: P ");
+      System.out.println("Preorder Traversal");
+      giving.reset(BST.PREORDER);
+      while(giving.hasNext()) 
+      {System.out.println(((Fish)giving.getNext()).getName()); }
+      }
+        else if(a=='H')
+        {
+          System.out.println("H	Help: print a list of commands");
+          System.out.println("E name age diet	Enroll a new camper (insert)");
+          System.out.println("W name	Withdraw a camper (delete)");
+          System.out.println("D name	Display the age and diet of a camper");
+          System.out.println("A	Print the average age of the campers");  
+          System.out.println("L	List all campers names in alphabetical order");  
+          System.out.println("V	Print the number of vegan campers");                             
+          System.out.println("P	List all campers names in preorder");  
+          System.out.println("Q	Quit");  
+        }
+ 
+       else if(a=='L')
+      {
+        int it=0;
+        String names = "";
+          System.out.println("Command: L");
+        System.out.println("Alphabetical List of Campers:");
+         String[] myarray = new String[100];
+        giving.reset(BST.PREORDER);
+    while(giving.hasNext()) 
+      { 
+        myarray[it] = ((Fish)giving.getNext()).getName();
+        it++;
+      }
+        for(int i = 0; i<100; i++) 
+         {  
+             for (int j = i+1; j<100; j++)   
+             {  
+               if(myarray[i]!=null&& myarray[j]!=null)
+               {
+                if(myarray[i].compareTo(myarray[j])>0)   
+                {  
+                  
+           
+           
+                    String temp = myarray[i];  
+                    myarray[i] = myarray[j];  
+                    myarray[j] = temp;  
+           
+                 }
+               }
+              }  
+           }
+         for (String element: myarray) {
+           if(element!=null)
+           {
+              System.out.println(element);
+           }
+           
+        }
+      }
+     
+      else if(a=='W')
+      {
+        System.out.print("Command: W ");
+        String jack = "";
+        jack = fishfile2.next();
+        System.out.print(jack);
+        Fish key=new Fish(jack,0,"");
+        Fish answer=(Fish)giving.lookup(key);
+        answer=(Fish) giving.delete(key);
+       System.out.println("\nDeleting "+key.getName());
+      }
+        else if(a=='D')
+      {
+       System.out.print("Command: D ");
+        String jake = "";
+        jake = fishfile2.next();
+        System.out.print(jake);
+        Fish key=new Fish(jake,0,"");
+        Fish answer=(Fish)giving.lookup(key);
+       System.out.println("\n"+ giving.lookup(answer));
+      }
+      
+      else if(a=='V')
+      {
+        System.out.print("Command: V ");
+        int vegoons=0;
+         giving.reset(BST.PREORDER);
+       while(giving.hasNext()) 
+      { 
+        if((((Fish)giving.getNext()).getStatus()).equals("V"))
+        {
+           vegoons ++;
 
-  public void print()
-  {
-    printhelp(root);
-  }
-  private void printhelp(treenode r)
-  {
-    if(r==null) return;
-    printhelp(r.left);
-    System.out.println(r.data);
-    printhelp(r.right);
-  }
-
-  public void insert(Comparable x)
-  {
-    root=inserthelp(root,x); // fake pass-by-reference for root
-  }
-  private treenode inserthelp(treenode r, Comparable x)
-  {
-    if(r==null) // empty tree - base case
-    {
-      r=new treenode();
-      r.data=x;
-      r.left=r.right=null;
-      count++;
-      return r;
+        }
+      }
+       System.out.println("\nTotal Vegans "+vegoons);
+      }
+      else if(a=='Q')
+      {
+        System.out.println("Command: Q ");
+        System.out.println("End of Program.");
+        System.out.println("Bring plenty of calomine!");
+        break;
+      }
     }
-    // recursive cases
-    // insert in left subtree
-    if(x.compareTo(r.data)<0) // x < r.data
-      { r.left=inserthelp(r.left,x); }
-    else // insert in right subtree
-      { r.right=inserthelp(r.right,x); }
-    return r; // root doesn't change in recursive case
-  }
 
 
-  public Comparable lookup(Comparable x) 
-  {
-    return lookuphelp(root,x);
-  }
-  private Comparable lookuphelp(treenode r, Comparable x)
-  {
-    // base cases
-    if(r==null) return null;
-    if(r.data.compareTo(x)==0) // it matches - we found it!
-      { return r.data; }
-    // recursive cases
-    if(x.compareTo(r.data)<0) // look to the left
-      { return lookuphelp(r.left,x); }
-    else // look to the right
-      { return lookuphelp(r.right,x); }
-  }
-
-  private Comparable itemdeleted;
-  public Comparable delete(Comparable x)
-  {
-    itemdeleted=null;
-    root=deletehelp(root,x);
-    return itemdeleted;
-  }
-  private treenode deletehelp(treenode r,Comparable x)
-  {
-    // base cases
-    if(r==null) // empty tree
-      { return r; } // no change
-    if(x.compareTo(r.data)==0) // found it
-    {
-      // 0 children
-      if(r.left==null && r.right==null)
-      {
-        count--;
-        itemdeleted=r.data;
-        return null;
-      }
-      // 1 child
-      if(r.left==null) // one child who's right
-      {
-        count--;
-        itemdeleted=r.data;
-        return r.right;
-      }
-      if(r.right==null) // one child who's left
-      {
-        count--;
-        itemdeleted=r.data;
-        return r.left;
-      }
-      // 2 children
-      // 1. find the inorder successor
-      treenode is=r.right;
-      treenode isparent=r;
-      while(is.left!=null) {isparent=is; is=is.left; }
-      // 2. copy over the item to delete
-      count--;
-      itemdeleted=r.data;
-      r.data=is.data;
-      // 3. delete the original inorder successor
-      if(is==isparent.left) // is is a left child
-      {
-        isparent.left=is.right; // promote the child if it exists
-      }
-      else // is is a right child
-      {
-        isparent.right=is.right; // promote the child if it exists
-      }
-      return r; // don't change the node holding x
     }
-    // recursive cases
-    if(x.compareTo(r.data)<0) // x is smaller - search left subtree
-      { r.left=deletehelp(r.left,x); }
-    else
-      { r.right=deletehelp(r.right,x); }
-    return r;
   }
-
-  // traversals/iterators
-  private Queue Q;
-  /*
-   order=  0 for preorder
-           1 for inorder
-           2 for postorder
-  */
-  public static final int PREORDER=0;
-  public static final int INORDER=1;
-  public static final int POSTORDER=2;
-
-  public void reset(int order) 
-  {
-    if(Q==null) { Q=new QueueLL(); }
-    else { Q.makeEmpty(); }
-    traversal(root,order);
-  }
-  private void traversal(treenode r, int order)
-  {
-    if(r==null) return; // empty subtree
-    
-    if(order==PREORDER) { Q.enqueue(r.data); }
-    traversal(r.left,order);
-    if(order==INORDER) { Q.enqueue(r.data); }
-    traversal(r.right,order);
-    if(order==POSTORDER) { Q.enqueue(r.data); }
-  }
-
-  public boolean hasNext() { return !Q.isEmpty(); }
-  public Comparable getNext() { return (Comparable)Q.dequeue(); }
-
-
-  public void makeEmpty()
-  {
-    root=null; count=0;
-  }
-  public boolean isEmpty() { return (count<=0); }
-  public boolean isFull() { return false; }
-  public int size() { return count; }
-
-
 }
-
-
 
